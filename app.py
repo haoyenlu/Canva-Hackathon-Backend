@@ -3,6 +3,7 @@ from fastapi import File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Annotated
+import uvicorn
 
 import io
 from PIL import Image
@@ -65,3 +66,13 @@ def get_image(item: DescriptionItem):
 
     return json.dumps(image_b64)
 
+
+
+if __name__ == '__main__':
+    uvicorn.run(
+        app=app,
+        host='0.0.0.0',
+        port='8082',
+        ssl_keyfile='./.ssl/key.pem',
+        ssl_certfile='./.ssl/cert.pem'
+    )
