@@ -13,6 +13,7 @@ import rembg
 import json
 
 from utils import  image_to_svg, transparent_to_white, image_to_b64
+from model import inference_diffusion_model
 
 class DescriptionItem(BaseModel):
     description: str = None
@@ -59,12 +60,13 @@ def upload_image(item: ImageItem):
 @app.post("/get_image")
 def get_image(item: DescriptionItem):
     # Test return images
+    # img_list = [Image.open("./images/cat.jpg"),Image.open("./images/dog.jpg")]
+    # image_b64 = [image_to_b64(image) for image in img_list]
+    
+    images = inference_diffusion_model(item.description,item.num_image)
+    images_b64 = [image_to_b64(image) for image in images]
 
-    img_list = [Image.open("./images/cat.jpg"),Image.open("./images/dog.jpg")]
-
-    image_b64 = [image_to_b64(image) for image in img_list]
-
-    return json.dumps(image_b64)
+    return json.dumps(images_b64)
 
 
 
